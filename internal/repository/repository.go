@@ -1,27 +1,30 @@
 package repository
 
 import (
-	"database/sql"
 	"fmt"
 	"genshin/internal/models"
+	"log"
 	"strings"
+
+	"github.com/jmoiron/sqlx"
 )
 
 type Repo interface {
 	InsertCharacter(character models.Character) error
+	GetCharacters() (characters []models.Character, err error)
 }
 
 type repository struct {
-	db *sql.DB
+	db *sqlx.DB
 }
 
-func NewRepository(db *sql.DB) Repo {
+func NewRepository(db *sqlx.DB) Repo {
 	return &repository{
 		db: db,
 	}
 }
 
-const query = `INSERT INTO characters`
+const query = `INSERT INTO Characters`
 
 func (r *repository) InsertCharacter(character models.Character) error {
 	insertQuery, args := r.getInsertQuery(character)
@@ -64,4 +67,19 @@ func (r *repository) getInsertQuery(c models.Character) (string, []interface{}) 
 	sql.WriteString(fmt.Sprintf("%s%s%s", "(", strings.Join(values, ", "), ")"))
 
 	return sql.String(), args
+}
+
+const getQuery = `SELECT id, CharacterName, Rarity, Region, Vision, Arkhe, WeaponType, ReleaseDate, Model, Constellation,
+		Birthday, SpecialDish, Affiliation, Limited, VoiceEng, VoiceCN, VoiceJP, VoiceKR, Ascension, AscensionSpecialty,
+		AscensionBoss, AscensionMaterial02, AscensionMaterial24, AscensionMaterial46, AscensionGem01, AscensionGem13, AscensionGem35,
+		AscensionGem56, TalentMaterial, TalentBook12, TalentBook23, TalentBook34, TalentBook45, TalentBook56, TalentBook67, TalentBook78,
+		TalentBook89, TalentBook910, TalentWeekly from Characters`
+
+func (r *repository) GetCharacters() (characters []models.Character, err error) {
+	if err = r.db.Select(&characters, getQuery); err != nil {
+		log.Println(err)
+		return nil, err
+	}
+
+	return characters, nil
 }

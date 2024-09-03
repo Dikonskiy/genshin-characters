@@ -1,25 +1,27 @@
 package database
 
 import (
-	"database/sql"
+	"fmt"
 	"genshin/internal/config"
 	"log"
 
 	"errors"
+
+	"github.com/jmoiron/sqlx"
 )
 
 type DB interface {
-	GetDB() *sql.DB
+	GetDB() *sqlx.DB
 }
 
 type mysql struct {
-	db *sql.DB
+	db *sqlx.DB
 }
 
 func NewMysqlConn(dbCfg config.Config) (DB, error) {
 	log.Println("mysql init...")
 
-	db, err := sql.Open("mysql", dbCfg.GetConnection())
+	db, err := sqlx.Connect("mysql", fmt.Sprintf("%s%s", dbCfg.GetConnection(), "?parseTime=true"))
 	if err != nil {
 		return nil, errors.Join(errors.New("NewMysqlConn sql.Open"), err)
 	}
@@ -29,6 +31,6 @@ func NewMysqlConn(dbCfg config.Config) (DB, error) {
 	}, nil
 }
 
-func (p mysql) GetDB() *sql.DB {
-	return p.db
+func (m mysql) GetDB() *sqlx.DB {
+	return m.db
 }

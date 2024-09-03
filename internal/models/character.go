@@ -3,42 +3,43 @@ package models
 import "time"
 
 type Character struct {
-	CharacterName       string
-	Rarity              string
-	Region              string
-	Vision              string
-	Arkhe               string
-	WeaponType          string
-	ReleaseDate         time.Time
-	Model               string
-	Constellation       string
-	Birthday            string
-	SpecialDish         string
-	Affiliation         string
-	Limited             string
-	VoiceEng            string
-	VoiceCN             string
-	VoiceJP             string
-	VoiceKR             string
-	Ascension           string
-	AscensionSpecialty  string
-	AscensionBoss       string
-	AscensionMaterial02 string
-	AscensionMaterial24 string
-	AscensionMaterial46 string
-	AscensionGem01      string
-	AscensionGem13      string
-	AscensionGem35      string
-	AscensionGem56      string
-	TalentMaterial      string
-	TalentBook12        string
-	TalentBook23        string
-	TalentBook34        string
-	TalentBook45        string
-	TalentBook56        string
-	TalentBook67        string
-	TalentBook78        string
-	TalentBook89        string
-	TalentBook910       string
-	TalentWeekly        string
+	Id                  int       `db:"id"`
+	CharacterName       string    `db:"CharacterName"`
+	Rarity              string    `db:"Rarity"`
+	Region              string    `db:"Region"`
+	Vision              string    `db:"Vision"`
+	Arkhe               string    `db:"Arkhe"`
+	WeaponType          string    `db:"WeaponType"`
+	ReleaseDate         time.Time `db:"ReleaseDate"`
+	Model               string    `db:"Model"`
+	Constellation       string    `db:"Constellation"`
+	Birthday            string    `db:"Birthday"`
+	SpecialDish         string    `db:"SpecialDish"`
+	Affiliation         string    `db:"Affiliation"`
+	Limited             string    `db:"Limited"`
+	VoiceEng            string    `db:"VoiceEng"`
+	VoiceCN             string    `db:"VoiceCN"`
+	VoiceJP             string    `db:"VoiceJP"`
+	VoiceKR             string    `db:"VoiceKR"`
+	Ascension           string    `db:"Ascension"`
+	AscensionSpecialty  string    `db:"AscensionSpecialty"`
+	AscensionBoss       string    `db:"AscensionBoss"`
+	AscensionMaterial02 string    `db:"AscensionMaterial02"`
+	AscensionMaterial24 string    `db:"AscensionMaterial24"`
+	AscensionMaterial46 string    `db:"AscensionMaterial46"`
+	AscensionGem01      string    `db:"AscensionGem01"`
+	AscensionGem13      string    `db:"AscensionGem13"`
+	AscensionGem35      string    `db:"AscensionGem35"`
+	AscensionGem56      string    `db:"AscensionGem56"`
+	TalentMaterial      string    `db:"TalentMaterial"`
+	TalentBook12        string    `db:"TalentBook12"`
+	TalentBook23        string    `db:"TalentBook23"`
+	TalentBook34        string    `db:"TalentBook34"`
+	TalentBook45        string    `db:"TalentBook45"`
+	TalentBook56        string    `db:"TalentBook56"`
+	TalentBook67        string    `db:"TalentBook67"`
+	TalentBook78        string    `db:"TalentBook78"`
+	TalentBook89        string    `db:"TalentBook89"`
+	TalentBook910       string    `db:"TalentBook910"`
+	TalentWeekly        string    `db:"TalentWeekly"`
 }

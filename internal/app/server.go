@@ -47,6 +47,7 @@ func (a *Application) StartServer() {
 	go shutdown(quit)
 
 	r.HandleFunc("/characters", hand.InsertCharacterHandler).Methods("POST")
+	r.HandleFunc("/characters", hand.GetCharacters).Methods("GET")
 
 	log.Println("Listening on port", cnfg.GetPort(), "...")
 	log.Fatal(server.ListenAndServe())
