@@ -6,6 +6,8 @@ import (
 	"genshin/internal/parser"
 	"genshin/internal/repository"
 	"net/http"
+
+	"github.com/gorilla/mux"
 )
 
 type Handlers struct {
@@ -35,14 +37,17 @@ func (h *Handlers) InsertCharacterHandler(w http.ResponseWriter, r *http.Request
 }
 
 func (h *Handlers) GetCharacters(w http.ResponseWriter, r *http.Request) {
-	characters, err := h.repo.GetCharacters()
+	vars := mux.Vars(r)
+	id := vars["id"]
+
+	characters, err := h.repo.GetCharacters(id)
 	if err != nil {
 		http.Error(w, fmt.Sprintf("Error get character: %v", err), http.StatusInternalServerError)
 		return
 	}
 
 	w.Header().Set("Content-Type", "application/json")
-	
+
 	if err := json.NewEncoder(w).Encode(characters); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}

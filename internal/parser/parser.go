@@ -7,6 +7,7 @@ import (
 	"io"
 	"log"
 	"os"
+	"strconv"
 	"time"
 )
 
@@ -53,6 +54,11 @@ func (p *Parse) parseCharacterData(data []string) (models.Character, error) {
 		return models.Character{}, fmt.Errorf("invalid data format: expected 39 fields, got %d", len(data))
 	}
 
+	rarity, err := strconv.Atoi(data[1])
+	if err != nil {
+		return models.Character{}, err
+	}
+
 	releaseDate, err := time.Parse("2006-01-02", data[6])
 	if err != nil {
 		return models.Character{}, err
@@ -60,7 +66,7 @@ func (p *Parse) parseCharacterData(data []string) (models.Character, error) {
 
 	return models.Character{
 		CharacterName:       data[0],
-		Rarity:              data[1],
+		Rarity:              rarity,
 		Region:              data[2],
 		Vision:              data[3],
 		Arkhe:               data[4],

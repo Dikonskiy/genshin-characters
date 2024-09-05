@@ -5,7 +5,7 @@ import "time"
 type Character struct {
 	Id                  int       `db:"id"`
 	CharacterName       string    `db:"CharacterName"`
-	Rarity              string    `db:"Rarity"`
+	Rarity              int       `db:"Rarity"`
 	Region              string    `db:"Region"`
 	Vision              string    `db:"Vision"`
 	Arkhe               string    `db:"Arkhe"`

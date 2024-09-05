@@ -11,7 +11,7 @@ import (
 
 type Repo interface {
 	InsertCharacter(character models.Character) error
-	GetCharacters() (characters []models.Character, err error)
+	GetCharacters(id string) (characters []models.Character, err error)
 }
 
 type repository struct {
@@ -75,11 +75,35 @@ const getQuery = `SELECT id, CharacterName, Rarity, Region, Vision, Arkhe, Weapo
 		AscensionGem56, TalentMaterial, TalentBook12, TalentBook23, TalentBook34, TalentBook45, TalentBook56, TalentBook67, TalentBook78,
 		TalentBook89, TalentBook910, TalentWeekly from Characters`
 
-func (r *repository) GetCharacters() (characters []models.Character, err error) {
-	if err = r.db.Select(&characters, getQuery); err != nil {
+func (r *repository) GetCharacters(id string) (characters []models.Character, err error) {
+	query, args := r.getCharacters(id)
+
+	if err = r.db.Select(&characters, query, args...); err != nil {
 		log.Println(err)
 		return nil, err
 	}
 
 	return characters, nil
+}
+
+func (r *repository) getCharacters(id string) (string, []interface{}) {
+	var (
+		sql     strings.Builder
+		clauses []string
+		args    []interface{}
+	)
+
+	sql.WriteString(getQuery)
+
+	if id != "" {
+		clauses = append(clauses, "id = ?")
+		args = append(args, id)
+	}
+
+	if len(clauses) > 0 {
+		sql.WriteString(" WHERE ")
+		sql.WriteString(strings.Join(clauses, ` AND `))
+	}
+
+	return sql.String(), args
 }

@@ -26,9 +26,15 @@ func NewApplication() *Application {
 func (a *Application) StartServer() {
 	cnfg, err := config.NewConfig(".env")
 	if err != nil {
+		log.Println(err)
 		return
 	}
+
 	db, err := database.NewMysqlConn(cnfg)
+	if err != nil {
+		log.Println(err)
+		return
+	}
 	parser := parser.NewParser()
 	repo := repository.NewRepository(db.GetDB())
 	hand := handlers.NewHandler(repo, parser)
@@ -48,6 +54,7 @@ func (a *Application) StartServer() {
 
 	r.HandleFunc("/characters", hand.InsertCharacterHandler).Methods("POST")
 	r.HandleFunc("/characters", hand.GetCharacters).Methods("GET")
+	r.HandleFunc("/characters/{id}", hand.GetCharacters).Methods("GET")
 
 	log.Println("Listening on port", cnfg.GetPort(), "...")
 	log.Fatal(server.ListenAndServe())
